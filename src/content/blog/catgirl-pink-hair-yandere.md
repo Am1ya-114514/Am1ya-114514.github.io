@@ -1,5 +1,6 @@
 ---
 title: "猫娘、粉毛、病娇、重女"
+slug: "catgirl-pink-hair-yandere"
 description: "四个标签，四种让人挪不开眼的理由。"
 pubDate: 2026-10-12
 tags: ["Anime", "Character", "Preference"]

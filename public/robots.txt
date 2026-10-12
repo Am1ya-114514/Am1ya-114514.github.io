@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /admin/
+
+Sitemap: https://am1ya-114514.github.io/sitemap-index.xml

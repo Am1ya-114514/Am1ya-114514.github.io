@@ -6,3 +6,6 @@ Thumbs.db
 *.log
 __pycache__/
 *.pyc
+
+# 换头像脚本用完就删的临时选择结果
+tools/.picked-avatar

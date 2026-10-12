@@ -1,5 +1,6 @@
 ---
 title: "这个博客是怎么搭起来的"
+slug: "building-this-blog"
 description: "从一份现成的 Astro 主题出发，改造成单主题个人站的完整过程记录。"
 pubDate: 2026-10-12
 tags: ["Astro", "Frontend", "Build"]

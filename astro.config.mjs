@@ -8,7 +8,12 @@ import rehypeSlug from "rehype-slug";
 import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeExpressiveCode from "rehype-expressive-code";
 import * as pagefind from "pagefind";
+import { readdir, readFile } from "node:fs/promises";
+import path from "node:path";
 import { fileURLToPath } from "node:url";
+
+// The writing desk lives at /admin/ and must never show up in site search.
+const pagefindExcludedPaths = ["admin/"];
 
 const expressiveCodeOptions = {
   themes: ["github-dark"],
@@ -60,13 +65,29 @@ const pagefindIntegration = () => ({
       }
 
       const distDir = fileURLToPath(dir);
-      const addResult = await index.addDirectory({
-        path: distDir,
-        glob: "**/*.html"
-      });
 
-      if (addResult.errors.length) {
-        logger.warn(`Pagefind indexing warnings: ${addResult.errors.join(", ")}`);
+      // Files are fed to Pagefind one by one instead of via addDirectory, so the
+      // excluded routes can be filtered by path rather than by page markup.
+      const htmlFiles = (await readdir(distDir, { recursive: true }))
+        .map((entry) => entry.split(path.sep).join("/"))
+        .filter((entry) => entry.endsWith(".html"))
+        .filter((entry) => !pagefindExcludedPaths.some((prefix) => entry.startsWith(prefix)))
+        .sort();
+
+      let pageCount = 0;
+      for (const relativePath of htmlFiles) {
+        const content = await readFile(path.join(distDir, relativePath), "utf8");
+        // Mirrors Pagefind's own URL derivation: only a trailing index.html is dropped.
+        const url = `/${relativePath.endsWith("index.html")
+          ? relativePath.slice(0, -"index.html".length)
+          : relativePath}`;
+        const fileResult = await index.addHTMLFile({ url, content });
+
+        if (fileResult.errors.length) {
+          logger.warn(`Pagefind skipped ${url}: ${fileResult.errors.join(", ")}`);
+        } else {
+          pageCount += 1;
+        }
       }
 
       const writeResult = await index.writeFiles({
@@ -76,7 +97,7 @@ const pagefindIntegration = () => ({
       if (writeResult.errors.length) {
         logger.warn(`Pagefind write warnings: ${writeResult.errors.join(", ")}`);
       } else {
-        logger.info(`Pagefind indexed ${addResult.page_count} pages.`);
+        logger.info(`Pagefind indexed ${pageCount} pages.`);
       }
 
       await pagefind.close();
@@ -94,7 +115,11 @@ export default defineConfig({
   integrations: [
     expressiveCode(expressiveCodeOptions),
     sitemap({
-      filter: (page) => !new URL(page).pathname.startsWith("/themes/")
+      // /themes/ 只是历史遗留的静态资源前缀；/admin/ 是写作台，不该被搜索引擎收录。
+      filter: (page) => {
+        const { pathname } = new URL(page);
+        return !pathname.startsWith("/themes/") && !pathname.startsWith("/admin/");
+      }
     }),
     icon({
       include: {

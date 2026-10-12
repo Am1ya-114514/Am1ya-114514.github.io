@@ -1,0 +1,114 @@
+# 阿巴怪的实验室 · 站内写作台（Sveltia CMS）
+#
+# 这个文件被 public/admin/index.html 里的 sveltia-cms.js 读取。
+# 它描述「哪些文件可以被网页编辑」，改完 push 一次就会生效。
+# 注意：这里改的是 src/content/blog 下的 Markdown；
+# 发布 = 直接向 main 提交一次 commit，GitHub Actions 会自动重新构建站点。
+
+backend:
+  name: github
+  repo: Am1ya-114514/Am1ya-114514.github.io
+  branch: main
+
+# 登录后的几个链接，纯装饰
+site_url: https://am1ya-114514.github.io/
+display_url: https://am1ya-114514.github.io/
+logo_url: https://am1ya-114514.github.io/themes/fuyukawa-kagari/assets/pig-brand.webp
+
+# 直接提交到 main（simple）。改成 editorial 会走 Pull Request 草稿流程。
+publish_mode: simple
+
+# 正文里插图片时，文件落在 public/blog-assets/，网页上对应 /blog-assets/
+media_folder: "public/blog-assets"
+public_folder: "/blog-assets"
+
+collections:
+  - name: blog
+    label: 笔记
+    label_singular: 一条笔记
+    description: 对应 src/content/blog 下的 Markdown 文件
+    folder: "src/content/blog"
+    create: true
+    delete: true
+    extension: "md"
+    format: "frontmatter"
+    # 文件名用下面这个 slug 字段，保证网址永远是纯英文
+    slug: "{{fields.slug}}"
+    preview_path: "blog/{{fields.slug}}/"
+    sortable_fields: ["pubDate", "title"]
+    fields:
+      - name: title
+        label: 标题
+        widget: string
+        hint: 显示在文章页和列表里
+
+      - name: slug
+        label: 网址文件名（slug）
+        widget: string
+        pattern: ["^[a-z0-9]+(?:-[a-z0-9]+)*$", "只能用小写英文字母、数字和连字符 -，例如 my-first-note"]
+        hint: 决定文章网址 /blog/<slug>/，之后尽量别改，改了旧链接会失效
+
+      - name: description
+        label: 摘要
+        widget: text
+        hint: 一兩句话，显示在列表卡片和搜索结果里
+
+      - name: pubDate
+        label: 发布日期
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
+
+      - name: updatedDate
+        label: 更新日期
+        widget: datetime
+        date_format: "YYYY-MM-DD"
+        time_format: false
+        picker_utc: true
+        required: false
+        hint: 留空表示没改过
+
+      - name: category
+        label: 分类
+        widget: select
+        default: tech
+        options:
+          - { label: 技术开发, value: tech }
+          - { label: 二次元, value: anime }
+          - { label: 日常记录, value: life }
+
+      - name: tags
+        label: 标签
+        widget: list
+        required: false
+        default: []
+        hint: 一行一个，会显示成 #标签
+
+      - name: draft
+        label: 草稿
+        widget: boolean
+        default: false
+        hint: 打勾就暂时不发布到站点上
+
+      - name: seoTitle
+        label: SEO 标题（可选）
+        widget: string
+        required: false
+        hint: 留空就用上面的标题
+
+      - name: seoDescription
+        label: SEO 描述（可选）
+        widget: text
+        required: false
+        hint: 留空就用上面的摘要
+
+      - name: seoKeywords
+        label: SEO 关键词（可选）
+        widget: list
+        required: false
+        default: []
+
+      - name: body
+        label: 正文
+        widget: markdown

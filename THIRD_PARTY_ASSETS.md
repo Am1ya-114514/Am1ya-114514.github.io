@@ -13,6 +13,8 @@
 | Live2D 模型「千鹤离」 | `public/themes/fuyukawa-kagari/live2d/chieri/` | 第三方 Live2D 模型（`qianhuili.moc3` 等），版权归模型作者 |
 | 「Am1ya Lab」手写字标 | `public/themes/fuyukawa-kagari/assets/hero-title.svg` | 由 `tools/prepare-title-lettering.py` 从 **Segoe Print** 字形轮廓烘焙；该字体随 Windows 提供，字标本身在本仓库生成 |
 | 依赖内置图标 | 构建产物内联 | [Tabler Icons](https://github.com/tabler/tabler-icons)（MIT）、[Simple Icons](https://github.com/simple-icons/simple-icons)（CC0-1.0），经 `@iconify-json/*` 本地打包 |
+| 站内写作台 | `public/admin/sveltia-cms.js` | [Sveltia CMS](https://github.com/sveltia/sveltia-cms) v0.235.0，MIT，整包内置（sha256 记录在 `tests/admin-panel.test.ts`，升级时同步更新） |
+| 写作台的界面字体与中文语言包 | 不随仓库分发 | Sveltia 在浏览器里按需从 `cdn.jsdelivr.net`（字体）与 `unpkg.com`（`zh-CN` 语言包）加载；加载不到时界面会退回英文，不影响写作台本身 |
 
 本表只覆盖主要条目，不构成逐项授权证明。
 

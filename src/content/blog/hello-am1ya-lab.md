@@ -1,5 +1,6 @@
 ---
 title: "重新开张：阿巴怪的实验室"
+slug: "hello-am1ya-lab"
 description: "把旧站推倒重建，换成一套可以长期写下去的房子。"
 pubDate: 2026-10-12
 tags: ["Blog", "Astro", "Restart"]

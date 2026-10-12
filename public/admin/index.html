@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
+    <meta name="referrer" content="no-referrer" />
+    <title>写作台 · 阿巴怪的实验室</title>
+    <link rel="icon" type="image/png" href="/themes/fuyukawa-kagari/assets/pig-favicon.png" />
+    <style>
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        background: #f7f3f7;
+        color: #31425f;
+        font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+      }
+
+      .admin-boot {
+        max-width: 34rem;
+        padding: 2rem;
+        text-align: center;
+        line-height: 1.9;
+      }
+
+      .admin-boot strong {
+        display: block;
+        font-size: 1.25rem;
+        letter-spacing: 0.04em;
+      }
+
+      .admin-boot p {
+        margin: 0.75rem 0 0;
+        color: #6b7a94;
+        font-size: 0.9rem;
+      }
+
+      .admin-boot code {
+        padding: 0.1rem 0.35rem;
+        border-radius: 0.35rem;
+        background: #fde8ef;
+        color: #b4526f;
+      }
+    </style>
+  </head>
+  <!-- Sveltia replaces the body content once it boots; this static block is the no-JS / slow-load fallback. -->
+  <body data-pagefind-ignore="all">
+    <div class="admin-boot">
+      <strong>阿巴怪的实验室 · 写作台</strong>
+      <p>正在加载编辑器… 如果一直停在这一屏，请检查网络后刷新。</p>
+      <noscript>
+        <p>写作台需要 JavaScript。请在浏览器设置里允许本站运行脚本，然后刷新本页。</p>
+      </noscript>
+      <p>第一次使用：点「Sign In with Token」，把 GitHub Token 粘进来即可。详见仓库 <code>README.md</code>。</p>
+    </div>
+    <script src="./sveltia-cms.js"></script>
+  </body>
+</html>
