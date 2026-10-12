@@ -1,4 +1,4 @@
-import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { deflateSync } from "node:zlib";
 
 import { buildManifest, isAudioFile } from "./lib/music-playlist.mjs";
@@ -18,6 +18,25 @@ async function readDeclaredPlaylist() {
   }
 }
 
+// The public folder is a build artifact, so anything the author has since deleted from
+// MUSIC/ has to disappear here too; otherwise an unpublished song would keep shipping.
+async function pruneStaleTracks(keep) {
+  let existing = [];
+
+  try {
+    existing = await readdir(publicMusicDir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+
+  const stale = existing.filter((entry) => entry.isFile() && isAudioFile(entry.name) && !keep.has(entry.name));
+  await Promise.all(stale.map((entry) => rm(new URL(entry.name, publicMusicDir), { force: true })));
+
+  if (stale.length > 0) {
+    console.log(`Music library: dropped ${stale.length} stale file(s) that are no longer in MUSIC/.`);
+  }
+}
+
 async function syncMusicLibrary() {
   let entries = [];
 
@@ -25,6 +44,7 @@ async function syncMusicLibrary() {
     entries = await readdir(sourceMusicDir, { withFileTypes: true });
   } catch {
     await mkdir(publicMusicDir, { recursive: true });
+    await pruneStaleTracks(new Set());
     await writeFile(new URL("manifest.json", publicMusicDir), "[]\n");
     return;
   }
@@ -36,6 +56,7 @@ async function syncMusicLibrary() {
   await Promise.all(
     audioEntries.map((entry) => copyFile(new URL(entry.name, sourceMusicDir), new URL(entry.name, publicMusicDir)))
   );
+  await pruneStaleTracks(new Set(names));
 
   const manifest = buildManifest(names, await readDeclaredPlaylist());
   await writeFile(new URL("manifest.json", publicMusicDir), `${JSON.stringify(manifest, null, 2)}\n`);

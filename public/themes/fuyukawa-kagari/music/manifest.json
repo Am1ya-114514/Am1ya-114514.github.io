@@ -1,1 +1,20 @@
-[]
+[
+  {
+    "id": "track-1",
+    "title": "雨爱",
+    "file": "01-雨爱.mp3",
+    "src": "/themes/fuyukawa-kagari/music/01-%E9%9B%A8%E7%88%B1.mp3"
+  },
+  {
+    "id": "track-2",
+    "title": "最后一页",
+    "file": "02-最后一页.mp3",
+    "src": "/themes/fuyukawa-kagari/music/02-%E6%9C%80%E5%90%8E%E4%B8%80%E9%A1%B5.mp3"
+  },
+  {
+    "id": "track-3",
+    "title": "把回忆拼好给你",
+    "file": "03-把回忆拼好给你.mp3",
+    "src": "/themes/fuyukawa-kagari/music/03-%E6%8A%8A%E5%9B%9E%E5%BF%86%E6%8B%BC%E5%A5%BD%E7%BB%99%E4%BD%A0.mp3"
+  }
+]

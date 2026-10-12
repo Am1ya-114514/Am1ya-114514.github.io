@@ -93,6 +93,18 @@ test("音量从 28% 起步，而不是媒体元素的默认 100%", async () => {
   );
 });
 
+test("从 MUSIC 删掉的歌也会从发布目录里消失", async () => {
+  const script = await readFile(new URL("scripts/generate-assets.mjs", root), "utf8");
+
+  assert.match(
+    script,
+    /entry\.isFile\(\) && isAudioFile\(entry\.name\) && !keep\.has\(entry\.name\)/,
+    "只清音频文件，manifest.json 之类的要留着"
+  );
+  assert.match(script, /await pruneStaleTracks\(new Set\(names\)\);/, "拷完新歌要顺手清掉已经删掉的旧歌");
+  assert.match(script, /await pruneStaleTracks\(new Set\(\)\);/, "MUSIC 目录整个没了时也要把发布目录清空");
+});
+
 test("MUSIC 文件夹本身带着使用说明", async () => {
   const readme = await readFile(new URL("MUSIC/README.md", root), "utf8");
   assert.match(readme, /playlist\.json/);
