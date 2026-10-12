@@ -31,6 +31,9 @@ test("the writing desk edits the same collection that Astro validates", async ()
   assert.match(config, /name:\s*github/);
   assert.match(config, /repo:\s*Am1ya-114514\/Am1ya-114514\.github\.io/);
   assert.match(config, /branch:\s*main/);
+  // There is no OAuth relay for this site, so the OAuth button must stay hidden:
+  // otherwise the login screen leads with a button that can only fail.
+  assert.match(config, /^\s{2}auth_methods:\s*\[\s*token\s*\]\s*$/m, "auth_methods must be [token] so the unusable OAuth button is hidden");
 
   // `folder` is the collection directory; `media_folder` sits at column 0 and is unrelated.
   const collectionFolder = config.match(/^ {4}folder:\s*"([^"]+)"/m)?.[1];

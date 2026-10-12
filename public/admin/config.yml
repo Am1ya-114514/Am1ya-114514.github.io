@@ -9,6 +9,9 @@ backend:
   name: github
   repo: Am1ya-114514/Am1ya-114514.github.io
   branch: main
+  # 本站没有 OAuth 中转服务，所以只保留「访问令牌登录」这一种方式。
+  # 少了这一行，登录页会多出一个点了必然失败的「使用 GitHub 登录」按钮。
+  auth_methods: [token]
 
 # 登录后的几个链接，纯装饰
 site_url: https://am1ya-114514.github.io/
