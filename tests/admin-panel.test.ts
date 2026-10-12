@@ -66,3 +66,34 @@ test("the writing desk edits the same collection that Astro validates", async ()
     assert.equal(slug, post.replace(/\.md$/, ""), `${post} must declare a slug that matches its filename`);
   }
 });
+
+test("the writing desk is themed through Sveltia's own design tokens", async () => {
+  const theme = await read("public/admin/admin-theme.css");
+  const host = await read("public/admin/index.html");
+
+  assert.match(host, /href="\.\/admin-theme\.css"/, "the host page must load the local theme");
+  assert.doesNotMatch(host, /<link[^>]+https?:/, "the theme must not be pulled from a CDN");
+
+  // `:root:root` outranks Sveltia's own `:root`, so the overrides do not depend on
+  // the order in which the CMS injects its stylesheet.
+  assert.match(theme, /^:root:root\s*\{/m, "token overrides must use the higher-specificity :root:root");
+
+  for (const token of [
+    "--sui-primary-accent-color",
+    "--sui-background-color-1-hsl",
+    "--sui-foreground-color-1-hsl",
+    "--sui-font-family-default",
+    "--sui-heading-font-family",
+    "--sui-line-height-default",
+    "--sui-shadow-color"
+  ]) {
+    assert.ok(theme.includes(`${token}:`), `the theme no longer sets ${token}`);
+  }
+
+  // The site accent is the muted slate blue from refresh.css, not Material's blue.
+  assert.match(theme, /--sui-primary-accent-color:\s*hsl\(207 27% 48%\)/);
+  assert.match(theme, /--sui-heading-font-family:\s*"Segoe Print"/, "headings should use the site's handwriting font");
+
+  // `--sveltia-*` does not exist; anything reaching for it would silently do nothing.
+  assert.doesNotMatch(theme, /--sveltia-/);
+});

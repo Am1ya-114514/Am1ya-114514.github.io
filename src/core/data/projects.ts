@@ -13,7 +13,7 @@ export const projectEntries = [
     type: "Web Lab",
     line: "astro",
     status: "持续追加",
-    summary: "你现在看到的这个站点。二次元手账风的外壳，加上樱花、电台、看板娘和一些可爱的小机关。",
+    summary: "你现在看到的这个站点。二次元手账风的外壳，加上樱花、电台和一些可爱的小机关。",
     details: ["Astro 静态站", "手账风视觉", "轻交互机关"]
   },
   {

@@ -22,7 +22,9 @@
 
 Token 只存在你自己浏览器的 localStorage 里，**不会**被写进仓库。换电脑或清空浏览器数据后需要重新粘贴一次。用完记得在 GitHub 的 [Tokens 页面](https://github.com/settings/tokens) 撤销。
 
-写作台本身由 `public/admin/` 提供：`index.html` 是宿主页，`config.yml` 描述「哪些文件能被编辑」，`sveltia-cms.js` 是内置的 [Sveltia CMS](https://sveltiacms.app/)（MIT）。`/admin/` 已经被排除在站点地图和站内搜索索引之外，并带上 `noindex`。
+写作台本身由 `public/admin/` 提供：`index.html` 是宿主页，`config.yml` 描述「哪些文件能被编辑」，`sveltia-cms.js` 是内置的 [Sveltia CMS](https://sveltiacms.app/)（MIT），`admin-theme.css` 把它的配色与字体调成和主站一致。`/admin/` 已经被排除在站点地图和站内搜索索引之外，并带上 `noindex`。
+
+`admin-theme.css` 的换肤方式是**只覆盖 Sveltia 自己的 `--sui-*` 设计变量**（用 `:root:root` 提高特异性），不去改它的类名，所以升级 CMS 时最不容易崩。想调色就改那个文件——它顶部的注释里写明了每个色值取自主站的哪个变量。改完 `npm run build` 会连样式一起带进 `dist/`。
 
 ### ② 换头像：双击 `tools/change-avatar.cmd`
 
@@ -116,7 +118,7 @@ tests/                            # node:test 测试
 tools/                            # 本地工具（换头像）
 public/admin/                     # 站内写作台
 public/blog-assets/               # 写作台上传的正文图片
-public/themes/fuyukawa-kagari/    # 静态资源：图片、Live2D、漫画、字体字标
+public/themes/fuyukawa-kagari/    # 静态资源：图片、漫画、字体字标
 ```
 
 `src/core/themes/registry.ts` 只声明一套主题，且不带 `routePrefix`，因此主题直接挂在站点根路径——没有 `/themes/...` 形式的子路径。
@@ -136,4 +138,4 @@ PYTHONPATH=<dir> python src/themes/fuyukawa-kagari/tools/prepare-title-lettering
 
 代码与样式依 [MIT 许可证](LICENSE) 授权。文章内容依 [CC BY-NC-SA 4.0](CONTENT_LICENSE.md) 授权。
 
-**仓库内的插画、漫画、Live2D 模型等第三方美术资源不在上述授权范围内**，详见 [第三方素材与复用边界](THIRD_PARTY_ASSETS.md)。
+**仓库内的插画、漫画等第三方美术资源不在上述授权范围内**，详见 [第三方素材与复用边界](THIRD_PARTY_ASSETS.md)。

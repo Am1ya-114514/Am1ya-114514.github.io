@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // 本地一键换头像。
 //
-// 用法（推荐）：双击仓库根目录下的「换头像.cmd」
+// 用法（推荐）：双击仓库里的 tools\change-avatar.cmd
 // 用法（手动）：node tools/change-avatar.mjs [选项]
 //
 //   --image=<路径>      直接指定图片，跳过文件选择框
@@ -24,7 +24,18 @@ import { existsSync } from "node:fs";
 import { readFile, rm, stat } from "node:fs/promises";
 import path from "node:path";
 import process from "node:process";
-import sharp from "sharp";
+
+// sharp comes from the project's node_modules. Import it defensively so a fresh
+// clone without `npm install` gets a readable sentence instead of a module trace.
+let sharp;
+try {
+  ({ default: sharp } = await import("sharp"));
+} catch {
+  console.error("\n[×] 还没有安装依赖（缺少 sharp）。\n");
+  console.error("    请在仓库根目录打开终端，先执行一次：\n");
+  console.error("        npm install\n");
+  process.exit(1);
+}
 
 const repoRoot = path.resolve(import.meta.dirname, "..");
 const assetsDir = path.join(repoRoot, "public", "themes", "fuyukawa-kagari", "assets");

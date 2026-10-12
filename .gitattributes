@@ -1,0 +1,5 @@
+# The batch launcher is parsed by cmd.exe, which requires CRLF and reads the
+# file in the console codepage. Keep it CRLF so a fresh checkout on any machine
+# can double-click it. Everything else stays LF.
+*.cmd text eol=crlf
+*.bat text eol=crlf

@@ -4,7 +4,7 @@ export const profileIdentity = {
   siteName: "阿巴怪的实验室",
   bio: "山有木兮木有枝，心悦君兮君不知。",
   github: "https://github.com/Am1ya-114514",
-  bilibili: "https://b23.tv/QeD1ykP"
+  bilibili: "https://space.bilibili.com/1136721542"
 } as const;
 
 export const profileStatus = [

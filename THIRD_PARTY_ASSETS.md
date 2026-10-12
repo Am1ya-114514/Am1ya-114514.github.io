@@ -10,7 +10,6 @@
 | 插画、漫画分镜与角色立绘 | `public/themes/fuyukawa-kagari/assets/`（除下列项） | 葉佐乃《儚いキミは猛攻をはじめる》相关美术 |
 | 条漫素材 | `public/themes/fuyukawa-kagari/assets/manga/` | 同上，附带 `manifest.json` |
 | 番剧 / 游戏封面 | `public/themes/fuyukawa-kagari/assets/about/` | 各作品官方视觉图，版权归各自权利人 |
-| Live2D 模型「千鹤离」 | `public/themes/fuyukawa-kagari/live2d/chieri/` | 第三方 Live2D 模型（`qianhuili.moc3` 等），版权归模型作者 |
 | 「Am1ya Lab」手写字标 | `public/themes/fuyukawa-kagari/assets/hero-title.svg` | 由 `tools/prepare-title-lettering.py` 从 **Segoe Print** 字形轮廓烘焙；该字体随 Windows 提供，字标本身在本仓库生成 |
 | 依赖内置图标 | 构建产物内联 | [Tabler Icons](https://github.com/tabler/tabler-icons)（MIT）、[Simple Icons](https://github.com/simple-icons/simple-icons)（CC0-1.0），经 `@iconify-json/*` 本地打包 |
 | 站内写作台 | `public/admin/sveltia-cms.js` | [Sveltia CMS](https://github.com/sveltia/sveltia-cms) v0.235.0，MIT，整包内置（sha256 记录在 `tests/admin-panel.test.ts`，升级时同步更新） |

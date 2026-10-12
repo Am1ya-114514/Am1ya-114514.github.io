@@ -11,14 +11,9 @@ const readSource = (relativePath: string) => readFileSync(
 const layoutSource = readSource("src/themes/fuyukawa-kagari/layouts/BaseLayout.astro");
 const homeSource = readSource("src/themes/fuyukawa-kagari/pages/HomePage.astro");
 
-test("Fuyukawa defers external Live2D work to idle or explicit intent", () => {
-  assert.match(layoutSource, /const scheduleLive2dWidget =/);
-  assert.match(layoutSource, /canAutoInitLive2d/);
-  assert.match(layoutSource, /requestIdleCallback\(start, \{ timeout: 3200 \}\)/);
-  assert.match(layoutSource, /scheduleLive2dWidget\(\);/);
-  assert.match(layoutSource, /live2dToggle\?\.addEventListener\("click"/);
-  assert.match(layoutSource, /initLive2dWidget\(\);/);
-  assert.match(layoutSource, /const live2dResources = new Map\(\)/);
+test("Fuyukawa no longer mounts the Live2D mascot", () => {
+  // Removed on request: nothing in the shared layout may pull the widget back in.
+  assert.doesNotMatch(layoutSource, /live2d|waifu/i);
 });
 
 test("Fuyukawa bounds and defers location and weather requests", () => {

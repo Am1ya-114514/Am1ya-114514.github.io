@@ -1,0 +1,129 @@
+/*!
+ * 阿巴怪的实验室 · 写作台外观
+ *
+ * 用途：把 Sveltia CMS 的界面调成与主站同一套视觉语言。
+ * 网址：/admin/（写作台本体在 public/admin/sveltia-cms.js，版本锁在 tests/admin-panel.test.ts）
+ *
+ * 做法说明：
+ * Sveltia 把整套配色、字号、圆角都放在 --sui-* 自定义属性里（默认挂在 :root 上）。
+ * 所以这里不去覆盖它的选择器，只重新赋值这些变量——版本升级时最不容易崩。
+ * 用 :root:root 提高一级特异性，保证无论 Sveltia 的样式表插在前面还是后面，这里都生效。
+ *
+ * 取色来自主站：src/themes/fuyukawa-kagari/styles/refresh.css 的 body[data-fuyukawa] 变量块。
+ *   --ink #47536b · --ink-soft #758099 · --accent #577f9f
+ *   --paper #ffffff · --paper-soft #eef5fb · 页面底色 #f8fbfe · --line #dfe7f0
+ */
+
+:root:root {
+  /* ---- 底色：淡蓝白纸面，和主站同一档 ---- */
+  --sui-background-color-1-hsl: 210 60% 99%;
+  --sui-background-color-2-hsl: 210 55% 98%;
+  --sui-background-color-3-hsl: 210 45% 96%;
+  --sui-background-color-4-hsl: 210 40% 93%;
+  --sui-background-color-5-hsl: 210 34% 88%;
+
+  /* ---- 分隔线与描边：比默认更淡、更偏蓝 ---- */
+  --sui-border-color-1-hsl: 210 22% 60%;
+  --sui-border-color-2-hsl: 210 28% 76%;
+  --sui-border-color-3-hsl: 210 34% 88%;
+
+  /* ---- 文字：主站墨色，去掉纯黑 ---- */
+  --sui-foreground-color-1-hsl: 220 22% 14%;
+  --sui-foreground-color-2-hsl: 220 20% 35%;
+  --sui-foreground-color-3-hsl: 220 18% 46%;
+  --sui-foreground-color-4-hsl: 220 16% 56%;
+  --sui-foreground-color-5-hsl: 220 15% 66%;
+
+  /* ---- 主色：主站的 #577f9f，饱和度比 Material 蓝低很多 ---- */
+  --sui-primary-accent-color: hsl(207 27% 48%);
+  --sui-primary-accent-color-dark: hsl(207 30% 38%);
+  --sui-primary-accent-color-light: hsl(207 28% 58%);
+  --sui-primary-accent-color-text: hsl(207 30% 42%);
+  --sui-primary-accent-color-translucent: hsl(207 27% 48% / 55%);
+  --sui-primary-accent-color-translucent-light: hsl(207 27% 58% / 32%);
+  --sui-focus-ring-color: hsl(207 40% 52%);
+
+  --sui-shadow-color: 215 35% 52%;
+
+  /* ---- 面板底色：默认是中性灰，改成主站那种偏蓝的纸面 ---- */
+  --sui-primary-background-color: hsl(210 55% 99%);
+  --sui-primary-background-color-translucent: hsl(210 55% 99% / 86%);
+  --sui-secondary-background-color: hsl(210 46% 97%);
+  --sui-secondary-background-color-translucent: hsl(210 46% 97% / 86%);
+  --sui-tertiary-background-color: hsl(210 40% 95%);
+  --sui-tertiary-background-color-translucent: hsl(210 40% 95% / 86%);
+  --sui-content-background-color: #ffffff;
+  --sui-button-background-color: hsl(210 42% 96%);
+  --sui-control-background-color: hsl(210 42% 96%);
+  --sui-code-background-color: hsl(210 40% 95%);
+  --sui-hover-background-color: hsl(207 27% 48% / 9%);
+  --sui-active-background-color: hsl(207 27% 48% / 17%);
+  --sui-selected-background-color: hsl(207 27% 48% / 13%);
+
+  /* ---- 字体：主站正文字体 + 手写标题 + Cascadia Code 等宽 ---- */
+  --sui-font-family-default: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --sui-control-font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --sui-textbox-font-family: "Segoe UI", "Microsoft YaHei", system-ui, sans-serif;
+  --sui-heading-font-family: "Segoe Print", "Microsoft YaHei", sans-serif;
+  --sui-font-family-monospace: "Cascadia Code", "Fira Code", Consolas, monospace;
+
+  /* ---- 行高：主站正文是 1.8，默认的 1.2 在中文里太挤 ---- */
+  --sui-line-height-default: 1.55;
+  --sui-line-height-comfortable: 1.75;
+  --sui-textbox-multiline-line-height: 1.75;
+
+  /* ---- 圆角：主站是小圆角，默认的 4px 略尖 ---- */
+  --sui-control-small-border-radius: 5px;
+  --sui-button-small-border-radius: 5px;
+  --sui-control-medium-border-radius: 6px;
+  --sui-button-medium-border-radius: 6px;
+  --sui-control-large-border-radius: 8px;
+  --sui-button-large-border-radius: 8px;
+  --sui-textbox-border-radius: 6px;
+  --sui-option-border-radius: 6px;
+  --sui-tree-item-border-radius: 6px;
+  --sui-listbox-border-radius: 8px;
+  --sui-checkbox-border-radius: 4px;
+}
+
+/* Sveltia 把这三项声明在应用外壳上（不继承自 :root），单独点名覆盖。 */
+html .sui {
+  --sui-textbox-placeholder-foreground-color: hsl(220 14% 62%);
+  --sui-textbox-placeholder-opacity: 1;
+}
+
+/* ---- 侧边栏：主站的「虚线分隔」是这套主题最有辨识度的记号 ---- */
+.sui .primary-sidebar {
+  border-right: 1px dashed hsl(210 34% 88%);
+}
+
+/* ---- 表单：字段之间的分隔线由实线改成主站同款虚线 ---- */
+.sui section.field {
+  border-color: hsl(210 34% 88%);
+  border-style: dashed;
+}
+
+/* 字段名比正文略重、提示语更淡，做出主站那种「墨色分层」 */
+.sui section.field .label {
+  color: hsl(220 20% 35%);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.sui section.field p.hint {
+  color: hsl(220 15% 58%);
+}
+
+/* ---- 顶栏：默认的灰边偏硬，换成极淡的蓝线 ---- */
+.sui .toolbar.horizontal.primary {
+  border-bottom: 1px dashed hsl(210 34% 88%);
+}
+
+/* ---- 仓库树与空状态：圆角与弱化文字，和主站导航一致 ---- */
+.sui .tree .treeitem {
+  border-radius: 6px;
+}
+
+.sui .empty-state {
+  color: hsl(220 15% 58%);
+}

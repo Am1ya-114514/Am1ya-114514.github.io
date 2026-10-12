@@ -1,12 +1,19 @@
 @echo off
-rem ─────────────────────────────────────────────────────────────
-rem  阿巴怪的实验室 · 一键换头像
-rem  双击本文件即可：选一张图 → 自动裁成正方形 → 提交并推送
-rem  详细说明见仓库根目录的 README.md
-rem ─────────────────────────────────────────────────────────────
-chcp 65001 >nul
+rem ---------------------------------------------------------------------------
+rem  Am1ya Lab - one-click avatar swap
+rem
+rem  Double-click this file: pick an image, it gets squared into
+rem  profile.webp / profile.jpg, then committed and pushed. Full manual and
+rem  every option are documented in README.md.
+rem
+rem  This file is deliberately ASCII-only with CRLF line endings. cmd.exe reads
+rem  batch files byte-by-byte in the console codepage, so putting Chinese text
+rem  here (or saving it with bare LF endings) makes every line mis-parse.
+rem  All Chinese output comes from tools\change-avatar.mjs instead.
+rem ---------------------------------------------------------------------------
 setlocal
 cd /d "%~dp0.."
+chcp 65001 >nul
 
 set "NODE="
 for %%C in (node.exe) do if not defined NODE set "NODE=%%~$PATH:C"
@@ -17,29 +24,14 @@ if not defined NODE if exist "%LocalAppData%\Programs\nodejs\node.exe" set "NODE
 
 if not defined NODE (
   echo.
-  echo   [x] 找不到 Node.js。
-  echo       请先安装 Node.js 22 或更高版本，然后重新双击本文件。
+  echo   [x] Node.js was not found.
+  echo       Install Node.js 22 or newer, then double-click this file again.
   echo.
   pause
   exit /b 1
 )
 
-if not exist "node_modules\sharp\package.json" (
-  echo.
-  echo   [x] 还没有安装依赖（缺少 sharp）。
-  echo       请在本文件夹打开终端，先执行：
-  echo.
-  echo           npm install
-  echo.
-  pause
-  exit /b 1
-)
-
-echo.
-echo   使用 Node: %NODE%
-echo.
-
-"%NODE%" "tools\change-avatar.mjs"
+"%NODE%" "tools\change-avatar.mjs" %*
 set "RC=%ERRORLEVEL%"
 
 echo.
