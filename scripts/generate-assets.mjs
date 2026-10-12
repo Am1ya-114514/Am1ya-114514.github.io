@@ -1,20 +1,21 @@
-import { copyFile, mkdir, readdir, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readFile, readdir, writeFile } from "node:fs/promises";
 import { deflateSync } from "node:zlib";
+
+import { buildManifest, isAudioFile } from "./lib/music-playlist.mjs";
 
 const outDir = new URL("../public/themes/fuyukawa-kagari/assets/", import.meta.url);
 await mkdir(outDir, { recursive: true });
 
 const sourceMusicDir = new URL("../MUSIC/", import.meta.url);
 const publicMusicDir = new URL("../public/themes/fuyukawa-kagari/music/", import.meta.url);
-const audioExtensions = new Set([".mp3", ".flac", ".wav", ".ogg", ".m4a"]);
 
-function extensionOf(filename) {
-  const index = filename.lastIndexOf(".");
-  return index >= 0 ? filename.slice(index).toLowerCase() : "";
-}
-
-function publicMusicPath(filename) {
-  return `/themes/fuyukawa-kagari/music/${filename.split("/").map(encodeURIComponent).join("/")}`;
+async function readDeclaredPlaylist() {
+  try {
+    return JSON.parse(await readFile(new URL("playlist.json", sourceMusicDir), "utf8"));
+  } catch {
+    // No playlist.json (or unreadable) means "just use the filename order".
+    return [];
+  }
 }
 
 async function syncMusicLibrary() {
@@ -29,24 +30,14 @@ async function syncMusicLibrary() {
   }
 
   await mkdir(publicMusicDir, { recursive: true });
-  const tracks = entries
-    .filter((entry) => entry.isFile() && audioExtensions.has(extensionOf(entry.name)))
-    .sort((a, b) => a.name.localeCompare(b.name, "zh-CN", { sensitivity: "base" }));
+  const audioEntries = entries.filter((entry) => entry.isFile() && isAudioFile(entry.name));
+  const names = audioEntries.map((entry) => entry.name);
 
   await Promise.all(
-    tracks.map((entry) => copyFile(new URL(entry.name, sourceMusicDir), new URL(entry.name, publicMusicDir)))
+    audioEntries.map((entry) => copyFile(new URL(entry.name, sourceMusicDir), new URL(entry.name, publicMusicDir)))
   );
 
-  const manifest = tracks.map((entry, index) => {
-    const title = entry.name.replace(/\.[^.]+$/, "");
-    return {
-      id: `track-${index + 1}`,
-      title,
-      file: entry.name,
-      src: publicMusicPath(entry.name)
-    };
-  });
-
+  const manifest = buildManifest(names, await readDeclaredPlaylist());
   await writeFile(new URL("manifest.json", publicMusicDir), `${JSON.stringify(manifest, null, 2)}\n`);
 }
 

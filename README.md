@@ -45,6 +45,25 @@ node tools/change-avatar.mjs --dry-run                         # 只生成，不
 
 站点引用头像的地方一共 3 处（`src/lib/site.ts`、`src/themes/fuyukawa-kagari/assets.ts`、`src/themes/fuyukawa-kagari/layouts/BaseLayout.astro`），都指向同一个文件名，所以换图不需要改代码。
 
+### ③ 加歌：把音频丢进 `MUSIC/`
+
+首页右下角「阿巴怪电台」的歌单来自仓库根目录的 **`MUSIC/`**：
+
+```
+F:\Github\Am1ya-114514.github.io\MUSIC\
+```
+
+把 `.mp3`（也支持 `.flac` `.wav` `.ogg` `.m4a`）放进去，再 `npm run build` 就会自动复制到
+`public/themes/fuyukawa-kagari/music/` 并重写 `manifest.json`（构建产物，别手改），
+push 之后线上生效。
+
+文件名开头的序号同时决定顺序和显示名：`01-最后一页.mp3` → 显示「最后一页」、排第 1。
+想自己定顺序或带歌手名，就在 `MUSIC/` 里放一个 `playlist.json`。细节见
+[`MUSIC/README.md`](MUSIC/README.md)。
+
+打开任意一页会自动续播；浏览器要求「先有用户操作才出声」，所以第一次访问若被拦下，
+播放器会在你**第一次点击 / 滚动 / 按键**时自动开始。右键（手机长按）→「♫ 进站续播」可以关掉。
+
 ## 技术栈
 
 | 用途 | 选择 |
@@ -116,9 +135,10 @@ src/
 scripts/                          # 构建期脚本
 tests/                            # node:test 测试
 tools/                            # 本地工具（换头像）
+MUSIC/                            # 电台歌单源文件（构建时复制进 public/）
 public/admin/                     # 站内写作台
 public/blog-assets/               # 写作台上传的正文图片
-public/themes/fuyukawa-kagari/    # 静态资源：图片、漫画、字体字标
+public/themes/fuyukawa-kagari/    # 静态资源：图片、漫画、字体字标、电台音频
 ```
 
 `src/core/themes/registry.ts` 只声明一套主题，且不带 `routePrefix`，因此主题直接挂在站点根路径——没有 `/themes/...` 形式的子路径。

@@ -175,7 +175,7 @@ test("music UI preserves zero volume, icon children, seek fill and live playback
     return { getItem: (key) => data.get(key) ?? null, setItem: (key, value) => data.set(key, value) };
   };
   const localStorage = storage();
-  localStorage.setItem("yuimi-radio-state-v1", JSON.stringify({ volume: 0 }));
+  localStorage.setItem("yuimi-radio-state-v2", JSON.stringify({ volume: 0 }));
   win.location = { origin: "https://example.test" };
   class Audio extends Element {
     constructor() { super(); this.volume = .28; this.paused = true; this.currentTime = 25; this.duration = 100; }
