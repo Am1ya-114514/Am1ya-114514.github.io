@@ -267,10 +267,10 @@ const fallingTags = [
         const theme = themes[(dayOfYear - 1) % themes.length];
         return {
           icon: theme[0],
-          title: `第 ${dayOfYear} 号历史趣味胶囊`,
+          title: `第 ${dayOfYear} 号电波胶囊`,
           tone: "history",
           lines: [theme[2], `今天的随机行动：${actions[(dayOfYear - 1) % actions.length]}`],
-          footnote: "没有撞上固定节日时，阿巴怪的实验室 会按日期投递不同的冷知识胶囊。"
+          footnote: "没撞上固定节日时，阿巴怪的实验室会按日期从池子里挑一颗冷知识。"
         };
       };
       const createThursdayV50Entry = () => {
@@ -285,7 +285,7 @@ const fallingTags = [
           title: "星期四 V50 电波",
           tone: "fun",
           lines: [`${opener}${plot}。${ask}`, ending],
-          footnote: "V50 文案由素材池按周组合生成，版本数很多，但钱包仍有最终解释权。"
+          footnote: "V50 文案由素材池按周组合生成，版本很多，但钱包有最终解释权。"
         };
       };
 
